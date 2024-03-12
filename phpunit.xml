@@ -1,0 +1,23 @@
+<phpunit
+	bootstrap="./test/bootstrap.php"
+	backupGlobals="false"
+	backupStaticAttributes="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+>
+	<testsuites>
+		<testsuite name="Tests">
+			<directory>./test/tests</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">./src</directory>
+		</whitelist>
+	</filter>
+    <listeners>
+        <listener class="VATLib\Test\Service\FakeViesServerManager"></listener>
+    </listeners>
+</phpunit>

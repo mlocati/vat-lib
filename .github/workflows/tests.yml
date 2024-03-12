@@ -1,0 +1,85 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  php-coding-style:
+    name: Check PHP coding style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: none
+          tools: php-cs-fixer:v3
+          coverage: none
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Check PHP coding style
+        run: php-cs-fixer fix --config=./.php-cs-fixer.php --path-mode=intersection --dry-run --using-cache=no --diff --show-progress=dots --ansi --no-interaction .
+  phpunit:
+    name: Run PHPUnit tests
+    needs: php-coding-style
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        php-version:
+          - "5.5"
+          - "5.6"
+          - "7.0"
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        include:
+          - os: ubuntu-latest
+            php-version: "5.5"
+            additional-dependencies: zendframework/zend-http
+          - os: ubuntu-latest
+            php-version: "5.6"
+            additional-dependencies: guzzlehttp/guzzle
+          - os: ubuntu-latest
+            php-version: "7.4"
+            additional-dependencies: zendframework/zend-http
+          - os: ubuntu-latest
+            php-version: "8.3"
+            additional-dependencies: guzzlehttp/guzzle
+          - os: windows-latest
+            php-version: "5.6"
+          - os: windows-latest
+            php-version: "7.4"
+          - os: windows-latest
+            php-version: "8.3"
+            additional-dependencies: guzzlehttp/guzzle
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+          extensions: curl
+          coverage: none
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Adding ${{ matrix.additional-dependencies }} to composer dependencies
+        if: matrix.additional-dependencies
+        run: composer --no-update --ansi --no-interaction require ${{ matrix.additional-dependencies }}
+      - name: Install Composer dependencies
+        run: composer --ansi --no-interaction --no-progress --optimize-autoloader update
+      - name: Run PHPUnit
+        run: composer --ansi --no-interaction run-script test

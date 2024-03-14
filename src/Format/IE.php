@@ -44,6 +44,16 @@ class IE implements Vies
     /**
      * {@inheritdoc}
      *
+     * @see \VATLib\Format::getFiscalRegion()
+     */
+    public function getFiscalRegion()
+    {
+        return static::REGION_EUROPEAN_UNION;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @see \VATLib\Format::getVatNumberPrefix()
      */
     public function getVatNumberPrefix()

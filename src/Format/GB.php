@@ -46,6 +46,16 @@ class GB implements Format
     /**
      * {@inheritdoc}
      *
+     * @see \VATLib\Format::getFiscalRegion()
+     */
+    public function getFiscalRegion()
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @see \VATLib\Format::getVatNumberPrefix()
      */
     public function getVatNumberPrefix()

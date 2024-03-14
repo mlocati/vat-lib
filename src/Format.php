@@ -4,12 +4,25 @@ namespace VATLib;
 
 interface Format
 {
+    const REGION_EUROPEAN_UNION = 'EU';
+
     /**
      * Get the ISO-3166 Alpha-2 Country code.
+     *
+     * @return string
      *
      * @see https://www.iso.org/obp/ui/#search/code/
      */
     public function getCountryCode();
+
+    /**
+     * Get the fiscal region (if applicable).
+     *
+     * @return string empty string if not applicable/available.
+     *
+     * @see \VATLib\Format::REGION_EUROPEAN_UNION
+     */
+    public function getFiscalRegion();
 
     /**
      * Get the (optional) prefix of a VAT number expressed in the "long" form.

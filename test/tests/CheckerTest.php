@@ -121,6 +121,15 @@ class CheckerTest extends TestCase
                 'hasExceptions' => false,
                 '__toString' => '12345679801',
             ]],
+            ['57440242469', 'FR', [
+                'isValid' => true,
+                'isInvalid' => false,
+                'getShortVatNumber' => '57440242469',
+                'getLongVatNumber' => 'FR57440242469',
+                'isSyntaxValid' => true,
+                'hasExceptions' => true,
+                '__toString' => '57440242469',
+            ]],
         ];
     }
 

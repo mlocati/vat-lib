@@ -129,6 +129,11 @@ class FormatTest extends TestCase
         } else {
             $this->assertSame($expectedLong, $longVatNumber);
         }
+        if (in_array($format->getCountryCode(), ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'], true)) {
+            $this->assertSame(Format::REGION_EUROPEAN_UNION, $format->getFiscalRegion());
+        } else {
+            $this->assertSame('', $format->getFiscalRegion());
+        }
     }
 
     /**

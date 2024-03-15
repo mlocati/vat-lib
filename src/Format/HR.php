@@ -2,11 +2,16 @@
 
 namespace VATLib\Format;
 
+use VATLib\Service\Iso7064;
+
 /**
- * https://www.bmf.gv.at/dam/jcr:6c874c4a-9f30-49d3-8da8-b7405f5aa944/BMF_UID_Konstruktionsregeln_Stand_November%202020.pdf
+ * @see https://www.bmf.gv.at/dam/jcr:6c874c4a-9f30-49d3-8da8-b7405f5aa944/BMF_UID_Konstruktionsregeln_Stand_November%202020.pdf
+ * @see https://www.porezna-uprava.hr/HR_OIB/Stranice/10_stvari_koje_trebate_znati.aspx
  */
 class HR implements Vies
 {
+    use Iso7064;
+
     /**
      * @var string
      * @private
@@ -54,6 +59,9 @@ class HR implements Vies
         if ($vatNumber === '' || preg_match('/^(' . static::RX . ')$/D', $vatNumber) !== 1) {
             return '';
         }
+        if (!$this->checkControlCode($vatNumber)) {
+            return '';
+        }
 
         return $vatNumber;
     }
@@ -86,5 +94,18 @@ class HR implements Vies
     public function getViesCountryCode()
     {
         return $this->getVatNumberPrefix();
+    }
+
+
+    /**
+     * @param string $vatNumber
+     *
+     * @return bool
+     */
+    private function checkControlCode($vatNumber)
+    {
+        $controlCode = $this->mod11_10($vatNumber, 10);
+
+        return $vatNumber[10] === (string) $controlCode;
     }
 }

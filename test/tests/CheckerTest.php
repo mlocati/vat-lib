@@ -174,7 +174,6 @@ class CheckerTest extends TestCase
             ]],
             ['00159560366', [
                 Format\FR::class,
-                Format\HR::class,
                 Format\IT::class,
                 Format\LV::class,
             ]],

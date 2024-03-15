@@ -296,3 +296,4 @@ The library supports these countries:
 - Switzerland (both `CHE-123.456.789` and `123.456.789` UID numbers)
 - United Kingdom (`GB`), with the following extension:
   - for VAT numbers starting with `XI`, the VIES service will be queried accordingly to the Protocol on Ireland and Northern Ireland
+- MOSS VAT numbers (`EU`)

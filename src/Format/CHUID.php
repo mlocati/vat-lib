@@ -5,7 +5,7 @@ namespace VATLib\Format;
 use VATLib\Format;
 
 /**
- * https://www.bfs.admin.ch/bfs/en/home/registers/enterprise-register/enterprise-identification/uid-general.html
+ * @see https://www.bfs.admin.ch/bfs/en/home/registers/enterprise-register/enterprise-identification/uid-general.html
  */
 class CHUID implements Format
 {

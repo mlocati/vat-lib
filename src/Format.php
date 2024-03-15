@@ -7,9 +7,9 @@ interface Format
     const REGION_EUROPEAN_UNION = 'EU';
 
     /**
-     * Get the ISO-3166 Alpha-2 Country code.
+     * Get the ISO-3166 Alpha-2 Country code (if applicable).
      *
-     * @return string
+     * @return string empty string for non country-specific formats.
      *
      * @see https://www.iso.org/obp/ui/#search/code/
      */

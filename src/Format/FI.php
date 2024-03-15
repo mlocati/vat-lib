@@ -108,7 +108,7 @@ class FI implements Vies
             case 10:
                 return false;
             case 11:
-                return $vatNumber[10] === '0';
+                return $vatNumber[7] === '0';
             default:
                 return $vatNumber[7] === (string) $r;
         }

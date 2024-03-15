@@ -98,6 +98,10 @@ class SE implements Vies
      */
     private function checkControlCode($vatNumber)
     {
+        $trailing = (int) substr($vatNumber, -2);
+        if ($trailing === 0 || $trailing > 94) {
+            return false;
+        }
         $sum = 0;
         for ($index = 0; $index <= 8; $index += 2) {
             $c = (int) $vatNumber[$index];

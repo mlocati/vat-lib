@@ -16,13 +16,13 @@ class NL implements Vies
      * @var string
      * @private
      */
-    const RX1 = 'NL[A-Z0-9+*]{12}';
+    const RX1 = '[0-9]{9}B[0-9]{2}';
 
     /**
      * @var string
      * @private
      */
-    const RX2 = '[0-9]{9}B[0-9]{2}';
+    const RX2 = '[A-Z0-9+*]{12}';
 
     /**
      * {@inheritdoc}
@@ -61,15 +61,12 @@ class NL implements Vies
      */
     public function formatShort($vatNumber)
     {
-        $vatNumber = is_string($vatNumber) ? strtoupper(preg_replace('/[\-.\s]/i', '', $vatNumber)) : '';
+        $vatNumber = is_string($vatNumber) ? strtoupper(preg_replace('/^NL|[\-.\s]/i', '', $vatNumber)) : '';
         if ($vatNumber === '') {
             return '';
         }
         if (preg_match('/^(' . static::RX1 . ')$/D', $vatNumber) === 1 && $this->checkControlCode1($vatNumber)) {
             return $vatNumber;
-        }
-        if (strpos($vatNumber, 'NL') === 0) {
-            $vatNumber = substr($vatNumber, 2);
         }
         if (preg_match('/^(' . static::RX2 . ')$/D', $vatNumber) === 1 && $this->checkControlCode2($vatNumber)) {
             return $vatNumber;
@@ -85,7 +82,7 @@ class NL implements Vies
      */
     public function convertShortToLongForm($shortVatNumber)
     {
-        return (strpos($shortVatNumber, 'NL') === 0 ? '' : $this->getVatNumberPrefix()) . $shortVatNumber;
+        return $this->getVatNumberPrefix() . $shortVatNumber;
     }
 
     /**
@@ -111,16 +108,37 @@ class NL implements Vies
     /**
      * @param string $vatNumber
      *
-     * @throws \VATLib\Exception\MissingPHPExtensions
-     *
      * @return bool
      */
     private function checkControlCode1($vatNumber)
     {
+        $multipliers = [9, 8, 7, 6, 5, 4, 3, 2];
+        $sum = 0;
+        for ($index = 0; $index <= 7; $index++) {
+            $sum += $multipliers[$index] * (int) $vatNumber[$index];
+        }
+        $controlCode = $sum % 11;
+        if ($controlCode === 10) {
+            return false;
+        }
+
+        return $vatNumber[8] === (string) $controlCode;
+    }
+
+    /**
+     * @param string $vatNumber
+     *
+     * @throws \VATLib\Exception\MissingPHPExtensions
+     *
+     * @return bool
+     */
+    private function checkControlCode2($vatNumber)
+    {
         $numeric = '';
+        $prefixedVatNumber = 'NL' . $vatNumber;
         $azBase = 10 - ord('A');
         for ($index = 0; $index <= 13; $index++) {
-            $char = $vatNumber[$index];
+            $char = $prefixedVatNumber[$index];
             if ($char >= '0' && $char <= '9') {
                 $numeric .= $char;
             } elseif ($char === '+') {
@@ -134,26 +152,6 @@ class NL implements Vies
         $checkControl = $this->getModulo97($numeric);
 
         return $checkControl === 1;
-    }
-
-    /**
-     * @param string $vatNumber
-     *
-     * @return bool
-     */
-    private function checkControlCode2($vatNumber)
-    {
-        $multipliers = [9, 8, 7, 6, 5, 4, 3, 2];
-        $sum = 0;
-        for ($index = 0; $index <= 7; $index++) {
-            $sum += $multipliers[$index] * (int) $vatNumber[$index];
-        }
-        $controlCode = $sum % 11;
-        if ($controlCode === 10) {
-            return false;
-        }
-
-        return $vatNumber[8] === (string) $controlCode;
     }
 
     /**

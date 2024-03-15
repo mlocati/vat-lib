@@ -39,6 +39,11 @@ abstract class TestCase4 extends TestCaseBase
         static::assertInternalType('string', $actual, $message);
     }
 
+    public static function assertIsArray($actual, $message = '')
+    {
+        static::assertInternalType('array', $actual, $message);
+    }
+
     public static function assertStringContainsString($substring, $string, $message = '')
     {
         return static::assertContains($substring, $string, $message);

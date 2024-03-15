@@ -151,6 +151,33 @@ if ($checkResult->hasExceptions()) {
 }
 ```
 
+## Detecting the possible countries given a VAT number
+
+If you have a generic VAT number and you would like to know the possible countries where it may be defined, you can use the `getApplicableFormats()` method of the `VATLib\Checker` class:
+
+```php
+$checker = new \VATLib\Checker();
+$formats = $checker->getApplicableFormats('00159560366');
+if ($formats === []) {
+    echo 'The VAT number is not valid';
+} else {
+    echo "The VAT number may be used in these countries:\n";
+    foreach ($formats as $format) {
+        echo "- {$format->getCountryCode()}\n";
+    }
+}
+```
+
+The code above would print:
+
+```
+The VAT number may be used in these countries:
+- FR
+- HR
+- IT
+- LV
+```
+
 
 ## Checking the status of the VIES service
 

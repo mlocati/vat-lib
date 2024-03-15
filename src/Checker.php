@@ -69,6 +69,40 @@ class Checker
     }
 
     /**
+     * Get the formats compatible with a VAT number.
+     *
+     * @param string|mixed $vatNumber
+     * @param bool $ignoreErrors
+     *
+     * @throws \VATLib\Exception if $ignoreErrors is false and errors occur while checking formats (for example missing PHP extensions on 32-bit systems)
+     *
+     * @return \VATLib\Format[]
+     */
+    public function getApplicableFormats($vatNumber, $ignoreErrors = false)
+    {
+        if (!is_string($vatNumber) || $vatNumber === '') {
+            return [];
+        }
+        $result = [];
+        foreach ($this->getFormatFactory()->getAllFormats() as $format) {
+            if ($ignoreErrors) {
+                try {
+                    $normalized = $format->formatShort($vatNumber);
+                } catch (Exception $_) {
+                    continue;
+                }
+            } else {
+                $normalized = $format->formatShort($vatNumber);
+            }
+            if ($normalized !== '') {
+                $result[] = $format;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @return \VATLib\Format\Factory
      */
     public function getFormatFactory()

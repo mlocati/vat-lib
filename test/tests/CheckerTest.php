@@ -4,6 +4,7 @@ namespace VATLib\Test;
 
 use VATLib\Checker;
 use VATLib\Checker\Result;
+use VATLib\Format;
 use VATLib\Test\Service\TestCase;
 use VATLib\Test\Service\ViesClientWrapper;
 
@@ -28,7 +29,7 @@ class CheckerTest extends TestCase
     /**
      * @return array[]
      */
-    public static function provideCases()
+    public static function provideCheckCases()
     {
         return [
             ['', '', [
@@ -143,18 +144,64 @@ class CheckerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCases
+     * @dataProvider provideCheckCases
      *
      * @param string|mixed $vatNumber
      * @param string|mixed $countryCode
      */
-    public function testCase($vatNumber, $countryCode, array $fields)
+    public function testCheck($vatNumber, $countryCode, array $fields)
     {
         $check = self::$checker->check($vatNumber, $countryCode);
         $this->assertInstanceOf(Result::class, $check);
         foreach ($fields as $getter => $expectedValue) {
             $actualValue = $check->{$getter}();
             $this->assertSame($expectedValue, $actualValue, "Result of {$getter}()");
+        }
+    }
+
+    /**
+     * @return array[]
+     */
+    public static function provideApplicableFormatsCases()
+    {
+        return [
+            [null, [], false],
+            ['', [], false],
+            [false, [], false],
+            ['0', [], false],
+            ['IT00159560366', [
+                Format\IT::class,
+            ]],
+            ['00159560366', [
+                Format\FR::class,
+                Format\HR::class,
+                Format\IT::class,
+                Format\LV::class,
+            ]],
+        ];
+    }
+
+    /**
+     * @dataProvider provideApplicableFormatsCases
+     *
+     * @param string|mixed $vatNumber
+     * @param string[] $expectedClasses
+     */
+    public function testApplicableFormats($vatNumber, array $expectedClasses, $maybeOthers = true)
+    {
+        $actualFormats = self::$checker->getApplicableFormats($vatNumber);
+        $this->assertIsArray($actualFormats);
+        $actualClasses = [];
+        foreach ($actualFormats as $actualFormat) {
+            $actualClasses[] = get_class($actualFormat);
+        }
+        if ($maybeOthers) {
+            $sameClasses = array_intersect($expectedClasses, $actualClasses);
+            sort($sameClasses);
+            $this->assertSame($expectedClasses, $sameClasses);
+        } else {
+            sort($actualClasses);
+            $this->assertSame($expectedClasses, $actualClasses);
         }
     }
 }

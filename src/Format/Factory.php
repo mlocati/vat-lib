@@ -113,6 +113,14 @@ class Factory
     }
 
     /**
+     * @return \VATLib\Format[]
+     */
+    public function getAllFormats()
+    {
+        return $this->formats;
+    }
+
+    /**
      * @param string|mixed $countryCode
      *
      * @return \VATLib\Format[]

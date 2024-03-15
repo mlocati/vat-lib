@@ -2,6 +2,7 @@
 
 namespace VATLib\Test;
 
+use RuntimeException;
 use VATLib\Format;
 use VATLib\Test\Service\TestCase;
 
@@ -12,6 +13,13 @@ class FormatTest extends TestCase
      */
     public static function provideValidCases()
     {
+        $formatFactory = new Format\Factory();
+        $missingFormats = array_map(
+            static function (Format $format) {
+                return get_class($format);
+            },
+            $formatFactory->getAllFormats()
+        );
         $result = [];
         foreach ([
             Format\AT::class => [
@@ -150,6 +158,10 @@ class FormatTest extends TestCase
                 ['40-10.36 19  251', '40103619251'],
                 ['40003009497'],
             ],
+            Format\MOSS::class => [
+                ['EU372000041', 'EU372000041', 'EU372000041'],
+                ['EU-37.20-00  041', 'EU372000041', 'EU372000041'],
+            ],
             Format\MT::class => [
                 ['10769208'],
                 ['10-76.92  08', '10769208'],
@@ -202,10 +214,17 @@ class FormatTest extends TestCase
                 ['HA500'],
             ],
         ] as $class => $cases) {
+            $index = array_search($class, $missingFormats, true);
+            if ($index !== false) {
+                unset($missingFormats[$index]);
+            }
             foreach ($cases as $case) {
                 array_unshift($case, $class);
                 $result[] = $case;
             }
+        }
+        if ($missingFormats !== []) {
+            throw new RuntimeException('Please provide the test cases in ' . __METHOD__ . " for these formats:\n- " . implode("\n- ", $missingFormats));
         }
 
         return $result;
@@ -235,7 +254,11 @@ class FormatTest extends TestCase
         } else {
             $this->assertSame($expectedLong, $longVatNumber);
         }
-        if (in_array($format->getCountryCode(), ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'], true)) {
+        if (
+            in_array($class, [Format\MOSS::class], true)
+            ||
+            in_array($format->getCountryCode(), ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'], true)
+        ) {
             $this->assertSame(Format::REGION_EUROPEAN_UNION, $format->getFiscalRegion());
         } else {
             $this->assertSame('', $format->getFiscalRegion());
@@ -247,6 +270,13 @@ class FormatTest extends TestCase
      */
     public static function provideInvalidCases()
     {
+        $formatFactory = new Format\Factory();
+        $missingFormats = array_map(
+            static function (Format $format) {
+                return get_class($format);
+            },
+            $formatFactory->getAllFormats()
+        );
         $result = [];
         foreach ([
             Format\AT::class => [
@@ -265,6 +295,18 @@ class FormatTest extends TestCase
             Format\BG::class => [
                 '10100450',
                 '30100450234',
+            ],
+            Format\CHE::class => [
+                '123456789',
+                'CHE12345678',
+                'CHE12345678A',
+                'CHE1234567890',
+            ],
+            Format\CHUID::class => [
+                'CHE123456789',
+                '12345678',
+                '12345678A',
+                '1234567890',
             ],
             Format\CY::class => [
                 '0053244511',
@@ -356,6 +398,11 @@ class FormatTest extends TestCase
                 '1234567890',
                 '123456789012',
             ],
+            Format\MOSS::class => [
+                'EU37200004A',
+                'EU0',
+                'EU1234567890123456789',
+            ],
             Format\MT::class => [
                 '1234567',
                 '1234567X',
@@ -407,9 +454,16 @@ class FormatTest extends TestCase
                 '12345678',
             ],
         ] as $class => $wrongVats) {
+            $index = array_search($class, $missingFormats, true);
+            if ($index !== false) {
+                unset($missingFormats[$index]);
+            }
             foreach ($wrongVats as $wrongVat) {
                 $result[] = [$class, $wrongVat];
             }
+        }
+        if ($missingFormats !== []) {
+            throw new RuntimeException('Please provide the test cases in ' . __METHOD__ . " for these formats:\n- " . implode("\n- ", $missingFormats));
         }
 
         return $result;

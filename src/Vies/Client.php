@@ -15,9 +15,12 @@ class Client
      */
     protected $httpAdapter;
 
-    public function __construct(Adapter $httpAdapter = null)
+    /**
+     * @param \VATLib\Http\Adapter|null $httpAdapter
+     */
+    public function __construct($httpAdapter = null)
     {
-        $this->httpAdapter = $httpAdapter ?: $this->buildHttpAdapter();
+        $this->httpAdapter = $httpAdapter instanceof Adapter ? $httpAdapter : $this->buildHttpAdapter();
     }
 
     /**

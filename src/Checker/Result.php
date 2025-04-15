@@ -40,21 +40,23 @@ class Result
 
     /**
      * @param string $shortVatNumber
+     * @param \VATLib\Format|null $format
      *
      * @return static
      */
-    public static function create($shortVatNumber, Format $format = null)
+    public static function create($shortVatNumber, $format = null)
     {
         return new static($shortVatNumber, $format);
     }
 
     /**
      * @param string $shortVatNumber
+     * @param \VATLib\Format|null $format
      */
-    public function __construct($shortVatNumber, Format $format = null)
+    public function __construct($shortVatNumber, $format = null)
     {
         $this->shortVatNumber = (string) $shortVatNumber;
-        $this->format = $format;
+        $this->format = $format instanceof Format ? $format : null;
     }
 
     /**
@@ -165,11 +167,13 @@ class Result
     /**
      * Set the VIES check response.
      *
+     * @param \VATLib\Vies\CheckVat\Response|null $value
+     *
      * @return $this
      */
-    public function setViesResult(Response $value = null)
+    public function setViesResult($value = null)
     {
-        $this->viesResult = $value;
+        $this->viesResult = $value instanceof Response ? $value : null;
 
         return $this;
     }

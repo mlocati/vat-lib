@@ -24,9 +24,12 @@ class Guzzle implements Adapter
         return class_exists(Client::class);
     }
 
-    public function __construct(Client $client = null)
+    /**
+     * @param \GuzzleHttp\Client|null $client
+     */
+    public function __construct($client = null)
     {
-        $this->client = $client === null ? new Client() : $client;
+        $this->client = $client instanceof Client ? $client : new Client();
     }
 
     /**

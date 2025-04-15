@@ -54,7 +54,7 @@ jobs:
             test/service/TestCase7.php
             test/service/TestCase9.php
   phpunit:
-    name: Run PHPUnit tests
+    name: PHPUnit with php${{ matrix.php-version }} (${{ matrix.os }})
     needs:
       - php-coding-style
       - php-syntax
@@ -74,6 +74,7 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         include:
           - os: ubuntu-latest
             php-version: "5.5"
@@ -85,14 +86,14 @@ jobs:
             php-version: "7.4"
             additional-dependencies: zendframework/zend-http
           - os: ubuntu-latest
-            php-version: "8.3"
+            php-version: "8.4"
             additional-dependencies: guzzlehttp/guzzle
           - os: windows-latest
             php-version: "5.6"
           - os: windows-latest
             php-version: "7.4"
           - os: windows-latest
-            php-version: "8.3"
+            php-version: "8.4"
             additional-dependencies: guzzlehttp/guzzle
     runs-on: ${{ matrix.os }}
     steps:

@@ -7,6 +7,6 @@ return [
     'errorWrappers' => [
         [
             'error' => 'INVALID_INPUT',
-        ]
+        ],
     ],
 ];

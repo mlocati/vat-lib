@@ -3,7 +3,6 @@
 namespace VATLib\Http\Adapter;
 
 use Exception;
-
 use GuzzleHttp\Client;
 use VATLib\Exception\IOError;
 use VATLib\Http\Adapter;
@@ -101,7 +100,7 @@ class Guzzle implements Adapter
     {
         return [
             $response->getStatusCode(),
-            (string) $response->getBody()
+            (string) $response->getBody(),
         ];
     }
 }

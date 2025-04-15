@@ -3,7 +3,6 @@
 namespace VATLib\Http\Adapter;
 
 use Exception;
-
 use VATLib\Exception\IOError;
 use VATLib\Http\Adapter;
 use Zend\Http\Client;
@@ -103,7 +102,7 @@ class Zend implements Adapter
     {
         return [
             $response->getStatusCode(),
-            $response->getBody()
+            $response->getBody(),
         ];
     }
 }

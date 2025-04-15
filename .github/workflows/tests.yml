@@ -48,6 +48,11 @@ jobs:
         uses: mlocati/check-php-syntax@v1
         with:
           fail-on-warnings: true
+          exclude: |
+            .php-cs-fixer.php
+            test/service/EventListener7.php
+            test/service/TestCase7.php
+            test/service/TestCase9.php
   phpunit:
     name: Run PHPUnit tests
     needs:

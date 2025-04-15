@@ -139,6 +139,8 @@ class FormatTest extends TestCase
             Format\IT::class => [
                 ['00000010215'],
                 ['00-15.95 60  366', '00159560366'],
+                ['12345679802'],
+                ['00799960158'],
             ],
             Format\LT::class => [
                 ['213179412'],
@@ -383,6 +385,7 @@ class FormatTest extends TestCase
                 '1234567890',
                 '00000001234',
                 'AA123456789',
+                '12345679801',
             ],
             Format\LT::class => [
                 '213179422',

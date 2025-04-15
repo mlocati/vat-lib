@@ -54,7 +54,7 @@ jobs:
             test/service/TestCase7.php
             test/service/TestCase9.php
   phpunit:
-    name: Run PHPUnit tests
+    name: PHPUnit with php${{ matrix.php-version }} (${{ matrix.os }})
     needs:
       - php-coding-style
       - php-syntax

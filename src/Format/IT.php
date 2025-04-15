@@ -107,7 +107,8 @@ class IT implements Vies
         }
         $evenSum = 0;
         for ($index = 1; $index <= 9; $index += 2) {
-            $evenSum += (((int) $vatNumber[$index]) << 1) % 9;
+            $baseNum = (((int) $vatNumber[$index]) << 1);
+            $evenSum += $baseNum > 9 ? $baseNum - 9 : $baseNum;
         }
         $controlCode = (10 - ($oddSum + $evenSum) % 10) % 10;
 

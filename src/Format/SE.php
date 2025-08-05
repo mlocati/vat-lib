@@ -92,6 +92,7 @@ class SE implements Vies
     }
 
     /**
+     * Luhn's algorithm: https://en.wikipedia.org/wiki/Luhn_algorithm
      * @param string $vatNumber
      *
      * @return bool
@@ -113,7 +114,7 @@ class SE implements Vies
         for ($index = 1; $index <= 7; $index += 2) {
             $sum += (int) $vatNumber[$index];
         }
-        $controlCode = 10 - $sum % 10;
+        $controlCode = (10 - $sum % 10) % 10;
 
         return $vatNumber[9] === (string) $controlCode;
     }

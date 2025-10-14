@@ -85,7 +85,7 @@ When the VAT number is syntactically valid, the library also queries the VIES se
 You can check the VIES response with some code like this:
 
 ```php
-$viesCheck = $checker->getViesResult();
+$viesCheck = $checkResult->getViesResult();
 if ($viesCheck === null) {
     // The VIES service has not been queried, or an error occurred while querying the VIES service.
 } elseif ($viesCheck->isValid() === true) {

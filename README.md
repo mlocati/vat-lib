@@ -297,3 +297,4 @@ The library supports these countries:
 - United Kingdom (`GB`), with the following extension:
   - for VAT numbers starting with `XI`, the VIES service will be queried accordingly to the Protocol on Ireland and Northern Ireland
 - MOSS VAT numbers (`EU`)
+- Brazil (`BR`), both `11.111.111/0001-55` and `123.456.789-00` UID numbers

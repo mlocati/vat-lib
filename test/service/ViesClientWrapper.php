@@ -2,10 +2,21 @@
 
 namespace VATLib\Test\Service;
 
+use VATLib\Vies\CheckVat;
 use VATLib\Vies\Client;
 
 class ViesClientWrapper extends Client
 {
+    /**
+     * @var int
+     */
+    public $checkStatusCalls = 0;
+
+    /**
+     * @var int
+     */
+    public $checkVatNumberCalls = 0;
+
     /**
      * @var bool
      */
@@ -27,6 +38,29 @@ class ViesClientWrapper extends Client
         $this->useFakeServer = (bool) $value;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @see \VATLib\Vies\Client::checkStatus()
+     */
+    public function checkStatus()
+    {
+        $this->checkStatusCalls++;
+
+        return parent::checkStatus();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \VATLib\Vies\Client::checkVatNumber()
+     */
+    public function checkVatNumber(CheckVat\Request $request)
+    {
+        $this->checkVatNumberCalls++;
+
+        return parent::checkVatNumber($request);
+    }
     /**
      * {@inheritdoc}
      *

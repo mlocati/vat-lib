@@ -16,6 +16,11 @@ class CheckerTest extends TestCase
     private static $checker;
 
     /**
+     * @var \VATLib\Test\Service\ViesClientWrapper
+     */
+    private static $viesClient;
+
+    /**
      * {@inheritdoc}
      *
      * @see \VATLib\Test\Service\TestCaseBase::doSetUpBeforeClass()
@@ -23,7 +28,14 @@ class CheckerTest extends TestCase
     protected static function doSetUpBeforeClass()
     {
         self::$checker = new Checker();
-        self::$checker->setViesClient(new ViesClientWrapper());
+        self::$viesClient = new ViesClientWrapper();
+        self::$checker->setViesClient(self::$viesClient);
+    }
+
+    public function doSetUp()
+    {
+        self::$viesClient->checkStatusCalls = 0;
+        self::$viesClient->checkVatNumberCalls = 0;
     }
 
     /**
@@ -170,10 +182,10 @@ class CheckerTest extends TestCase
     public function testCheck($vatNumber, $countryCode, array $fields)
     {
         $check = self::$checker->check($vatNumber, $countryCode);
-        $this->assertInstanceOf(Result::class, $check);
+        self::assertInstanceOf(Result::class, $check);
         foreach ($fields as $getter => $expectedValue) {
             $actualValue = $check->{$getter}();
-            $this->assertSame($expectedValue, $actualValue, "Result of {$getter}()");
+            self::assertSame($expectedValue, $actualValue, "Result of {$getter}()");
         }
     }
 
@@ -207,7 +219,7 @@ class CheckerTest extends TestCase
     public function testApplicableFormats($vatNumber, array $expectedClasses, $maybeOthers = true)
     {
         $actualFormats = self::$checker->getApplicableFormats($vatNumber);
-        $this->assertIsArray($actualFormats);
+        self::assertIsArray($actualFormats);
         $actualClasses = [];
         foreach ($actualFormats as $actualFormat) {
             $actualClasses[] = get_class($actualFormat);
@@ -215,10 +227,27 @@ class CheckerTest extends TestCase
         if ($maybeOthers) {
             $sameClasses = array_intersect($expectedClasses, $actualClasses);
             sort($sameClasses);
-            $this->assertSame($expectedClasses, $sameClasses);
+            self::assertSame($expectedClasses, $sameClasses);
         } else {
             sort($actualClasses);
-            $this->assertSame($expectedClasses, $actualClasses);
+            self::assertSame($expectedClasses, $actualClasses);
+        }
+    }
+
+    public function testUseVies()
+    {
+        self::assertTrue(self::$checker->useVies());
+        try {
+            self::$checker->setUseVies(false);
+            self::assertFalse(self::$checker->useVies());
+            self::$checker->check('IT00159560366', 'IT');
+            self::assertSame(0, self::$viesClient->checkVatNumberCalls);
+            self::$checker->setUseVies(true);
+            self::assertTrue(self::$checker->useVies());
+            self::$checker->check('IT00159560366', 'IT');
+            self::assertSame(1, self::$viesClient->checkVatNumberCalls);
+        } finally {
+            self::$checker->setUseVies(true);
         }
     }
 }

@@ -13,6 +13,11 @@ class Checker
     private $formatFactory = null;
 
     /**
+     * @var bool
+     */
+    private $useVies = true;
+
+    /**
      * @var \VATLib\Vies\Client|null
      */
     private $viesClient = null;
@@ -59,10 +64,12 @@ class Checker
         if ($countryCode === '') {
             $result->overrideIsLongFormPreferred(true);
         }
-        if ($result->isSyntaxValid() === true) {
-            if ($result->getFormat() instanceof Format\Vies) {
-                $this->checkVies($result);
-            }
+        if (
+            $result->isSyntaxValid() === true
+            && $this->useVies() === true
+            && $result->getFormat() instanceof Format\Vies
+        ) {
+            $this->checkVies($result);
         }
 
         return $result;
@@ -120,6 +127,30 @@ class Checker
     public function setFormatFactory(Format\Factory $value)
     {
         $this->formatFactory = $value;
+
+        return $this;
+    }
+
+    /**
+     * Should we check the VAT with VIES if the VAT is syntactically correct?
+     *
+     * @return bool
+     */
+    public function useVies()
+    {
+        return $this->useVies;
+    }
+
+    /**
+     * Should we check the VAT with VIES if the VAT is syntactically correct?
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function setUseVies($value)
+    {
+        $this->useVies = (bool) $value;
 
         return $this;
     }

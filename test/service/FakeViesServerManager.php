@@ -23,7 +23,7 @@ class FakeViesServerManager extends EventListener
      */
     protected function doStartTestSuite($testSuite)
     {
-        $this->startFakeServer();
+        $this->ensureFakeServer();
     }
 
     /**
@@ -33,7 +33,7 @@ class FakeViesServerManager extends EventListener
      */
     protected function doStartTest($test)
     {
-        $this->checkFakeServer($this->process);
+        $this->ensureFakeServer($this->process);
     }
 
     /**
@@ -46,7 +46,7 @@ class FakeViesServerManager extends EventListener
         $this->stopFakeServer();
     }
 
-    private function startFakeServer()
+    private function ensureFakeServer()
     {
         if ($this->process !== null) {
             $this->checkFakeServer($this->process);

@@ -16,7 +16,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: "8.5"
           extensions: none
           tools: php-cs-fixer:v3
           coverage: none
@@ -26,6 +26,7 @@ jobs:
           fetch-depth: 1
       - name: Check PHP coding style
         run: php-cs-fixer check --using-cache=no --diff --show-progress=dots --ansi --no-interaction
+
   php-syntax:
     name: Check PHP ${{ matrix.php-version }} Syntax
     runs-on: ubuntu-latest
@@ -33,7 +34,7 @@ jobs:
       matrix:
         php-version:
           - "5.5"
-          - "8.4"
+          - "8.5"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -53,8 +54,9 @@ jobs:
             test/service/EventListener7.php
             test/service/TestCase7.php
             test/service/TestCase9.php
+
   phpunit:
-    name: PHPUnit with php${{ matrix.php-version }} (${{ matrix.os }})
+    name: PHPUnit with php${{ matrix.php-version }} (${{ matrix.os }}) ${{ matrix.additional-dependencies }}
     needs:
       - php-coding-style
       - php-syntax

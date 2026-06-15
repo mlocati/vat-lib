@@ -102,6 +102,12 @@ if ($viesCheck === null) {
 - `false` if the VAT number is syntactically invalid, or the VIES service told us that it's not a valid
 - `null` if it's impossible to verify if the VAT number is valid
 
+You can disable VIES checks by using the `setUseVies` method:
+
+```php
+$checker->setUseVies(false);
+```
+
 ### Retrieving the formatted VAT number
 
 To obtain the *normalized* VAT number, you can use the `getShortVatNumber()` or the `getLongVatNumber()` methods of `$checkResult`:

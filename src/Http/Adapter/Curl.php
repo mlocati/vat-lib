@@ -67,7 +67,9 @@ class Curl implements Adapter
             $this->setCurlOptions($ch, [CURLOPT_URL => $url] + $options);
             $result = $this->runCurl($ch);
         } finally {
-            curl_close($ch);
+            if (PHP_VERSION_ID < 80000) {
+                curl_close($ch);
+            }
         }
 
         return $result;

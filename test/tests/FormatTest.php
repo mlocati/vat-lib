@@ -258,8 +258,7 @@ class FormatTest extends TestCase
         }
         if (
             in_array($class, [Format\MOSS::class], true)
-            ||
-            in_array($format->getCountryCode(), ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'], true)
+            || in_array($format->getCountryCode(), ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK'], true)
         ) {
             $this->assertSame(Format::REGION_EUROPEAN_UNION, $format->getFiscalRegion());
         } else {

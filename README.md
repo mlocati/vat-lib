@@ -80,6 +80,8 @@ $checkResult = $checker->check('00.15-95 603  66', 'IT');
   - you provided a country code that's not supported (or that's invalid)
   - you didn't provide a country code and it's not possible to determine the country associated to the VAT number provided (for example if you call `$checker->check('00159560366')`)
 
+If you provided an unsupported country code, `$checkResult->isUnsupportedCountry()` will return `true`.
+
 When the VAT number is syntactically valid, the library also queries the VIES service for EU countries.
 
 You can check the VIES response with some code like this:

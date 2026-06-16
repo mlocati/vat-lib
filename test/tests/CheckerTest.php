@@ -51,6 +51,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => '',
                 'isSyntaxValid' => false,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '',
             ]],
             ['00159560366', '', [
@@ -60,6 +62,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => '00159560366',
                 'isSyntaxValid' => null,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '00159560366',
             ]],
             ['IT00159560366', '', [
@@ -69,6 +73,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560366',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => 'IT00159560366',
             ]],
             ['IT00159560367', '', [
@@ -78,6 +84,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560367',
                 'isSyntaxValid' => false,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => 'IT00159560367',
             ]],
             ['IT00159560366', 'it', [
@@ -87,6 +95,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560366',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '00159560366',
             ]],
             ['IT-00159560366', 'it', [
@@ -96,6 +106,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560366',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '00159560366',
             ]],
             ['IT00159560366', 'DE', [
@@ -105,6 +117,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560366',
                 'isSyntaxValid' => false,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => 'IT00159560366',
             ]],
             ['IT00159560366', '00', [
@@ -114,6 +128,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00159560366',
                 'isSyntaxValid' => null,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => true,
+                'getUnsupportedCountryCode' => '00',
                 '__toString' => 'IT00159560366',
             ]],
             ['999080536', 'GR', [
@@ -123,6 +139,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'EL999080536',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '999080536',
             ]],
             ['12345679801', 'IT', [
@@ -132,6 +150,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => '12345679801',
                 'isSyntaxValid' => false,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '12345679801',
             ]],
             ['12345679802', 'IT', [
@@ -141,6 +161,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT12345679802',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '12345679802',
             ]],
             ['00799960158', 'IT', [
@@ -150,6 +172,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'IT00799960158',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '00799960158',
             ]],
             ['57440242469', 'FR', [
@@ -159,6 +183,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'FR57440242469',
                 'isSyntaxValid' => true,
                 'hasExceptions' => true,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => '57440242469',
             ]],
             ['NL002342672B42', '', [
@@ -168,6 +194,8 @@ class CheckerTest extends TestCase
                 'getLongVatNumber' => 'NL002342672B42',
                 'isSyntaxValid' => true,
                 'hasExceptions' => false,
+                'isUnsupportedCountry' => false,
+                'getUnsupportedCountryCode' => '',
                 '__toString' => 'NL002342672B42',
             ]],
         ];

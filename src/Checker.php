@@ -45,6 +45,9 @@ class Checker
             $formats = $this->getFormatFactory()->getFormatsByPrefix($vatNumber);
         } else {
             $formats = $this->getFormatFactory()->getFormatsForCountry($countryCode);
+            if ($formats === []) {
+                return Result::create($vatNumber)->setUnsupportedCountryCode($countryCode);
+            }
         }
         $result = null;
         foreach ($formats as $format) {

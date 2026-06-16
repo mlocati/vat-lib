@@ -9,6 +9,11 @@ use VATLib\Vies\CheckVat\Response;
 class Result
 {
     /**
+     * @var string
+     */
+    private $unsupportedCountry = '';
+
+    /**
      * @var \VATLib\Format|null
      */
     private $format = null;
@@ -57,6 +62,38 @@ class Result
     {
         $this->shortVatNumber = (string) $shortVatNumber;
         $this->format = $format instanceof Format ? $format : null;
+    }
+
+    /**
+     * Verification failed because the country is not supported?
+     *
+     * @return bool
+     */
+    public function isUnsupportedCountry()
+    {
+        return $this->unsupportedCountry !== '';
+    }
+
+    /**
+     * Get the code of the country that's not supported.
+     *
+     * @return string empty string if the country is supported, or if it's unknown
+     */
+    public function getUnsupportedCountryCode()
+    {
+        return $this->unsupportedCountry;
+    }
+
+    /**
+     * Set the code of the country that's not supported.
+     *
+     * @return $this
+     */
+    public function setUnsupportedCountryCode($value)
+    {
+        $this->unsupportedCountry = (string) $value;
+
+        return $this;
     }
 
     /**
